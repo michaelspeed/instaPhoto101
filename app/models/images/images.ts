@@ -1,5 +1,7 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { ImageModel } from "../image/image"
+import { PixabayApi } from "../../services/api/pixabay-api"
+import { withEnvironment } from "../extensions/with-environment"
 
 /**
  * Model description here for TypeScript hints.
@@ -10,10 +12,29 @@ export const ImagesModel = types
     images: types.optional(types.array(ImageModel), []),
     page: types.optional(types.number, 1)
   })
-  .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .extend(withEnvironment)
+  .actions(self => ({
+    addImageData(images) {
+      self.images.push(...images)
+    }
+  }))
   .actions((self) => ({
-
-  })) // eslint-disable-line @typescript-eslint/no-unused-vars
+    getInitialImageData: async () => {
+      const pixabayApi = new PixabayApi(self.environment.api)
+      const result = await pixabayApi.getImages(1)
+      if (result.kind === "ok") {
+        self.addImageData(result.images)
+      }
+    },
+    afterAttach() {
+      if (self.images.length === 0) {
+        this.getInitialImageData()
+      }
+    },
+    beforeDestroy() {
+      self.addImageData([])
+    }
+  }))// eslint-disable-line @typescript-eslint/no-unused-vars
 
 /**
  * Un-comment the following to omit model attributes from your snapshots (and from async storage).

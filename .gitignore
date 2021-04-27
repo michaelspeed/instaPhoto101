@@ -82,4 +82,4 @@ web-build/
 app/config/env.*.js
 !env.js
 
-.env
+app/config/env.dev.js

@@ -13,15 +13,21 @@ export const ImageModel = types
     previewURL: types.string,
     previewWidth: types.number,
     previewHeight: types.number,
-    largeImageUrl: types.string,
+    largeImageURL: types.string,
     imageWidth: types.number,
     imageHeight: types.number,
     imageSize: types.number,
     views: types.number,
-    download: types.number,
+    downloads: types.number,
     user_id: types.number,
     user: types.string,
-    userImageURL: types.string
+    userImageURL: types.string,
+    comments: types.number,
+    favorites: types.number,
+    likes: types.number,
+    webformatHeight: types.number,
+    webformatURL: types.string,
+    webformatWidth: types.number,
   })
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -35,7 +41,13 @@ export const ImageModel = types
  */
 
 type ImageType = Instance<typeof ImageModel>
-export interface Image extends ImageType {}
+
+export interface Image extends ImageType {
+}
+
 type ImageSnapshotType = SnapshotOut<typeof ImageModel>
-export interface ImageSnapshot extends ImageSnapshotType {}
+
+export interface ImageSnapshot extends ImageSnapshotType {
+}
+
 export const createImageDefaultModel = () => types.optional(ImageModel, {})
