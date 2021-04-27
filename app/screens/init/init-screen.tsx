@@ -1,14 +1,14 @@
 import React from "react"
-import { observer } from "mobx-react-lite"
-import { Header, Screen } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
+import { Card, Header, Screen } from "../../components"
 import tailwind from "tailwind-rn"
 import { SafeAreaView } from "react-native"
+import { useSelector } from "react-redux"
 
-export const InitScreen = observer(function InitScreen() {
+export function InitScreen() {
   // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
+  // const { imageStore } = useStores()
+  const stateRed = useSelector(state => state)
+  console.log(stateRed)
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
@@ -16,7 +16,8 @@ export const InitScreen = observer(function InitScreen() {
     <Screen style={tailwind('bg-white flex-1')} preset="scroll">
       <SafeAreaView style={tailwind('flex-1')}>
         <Header/>
+        <Card/>
       </SafeAreaView>
     </Screen>
   )
-})
+}
