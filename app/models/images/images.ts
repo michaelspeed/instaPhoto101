@@ -16,6 +16,9 @@ export const ImagesModel = types
   .actions(self => ({
     addImageData(images) {
       self.images.push(...images)
+    },
+    addPage() {
+      self.page = self.page + 1
     }
   }))
   .actions((self) => ({
@@ -26,14 +29,22 @@ export const ImagesModel = types
         self.addImageData(result.images)
       }
     },
+    getNextPageData: async () => {
+      const pixabayApi = new PixabayApi(self.environment.api)
+      const result = await pixabayApi.getImages(self.page + 1)
+      if (result.kind === "ok") {
+        self.addImageData(result.images)
+        self.addPage()
+      }
+    },
     afterAttach() {
       if (self.images.length === 0) {
         this.getInitialImageData()
+      } else {
+        self.addImageData([])
+        this.getInitialImageData()
       }
     },
-    beforeDestroy() {
-      self.addImageData([])
-    }
   }))// eslint-disable-line @typescript-eslint/no-unused-vars
 
 /**

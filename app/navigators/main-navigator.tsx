@@ -6,7 +6,7 @@
  */
 import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
-import { InitScreen } from "../screens"
+import { DetailsScreen, InitScreen } from "../screens"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -22,6 +22,7 @@ import { InitScreen } from "../screens"
  */
 export type PrimaryParamList = {
   init: undefined
+  details: undefined
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -34,6 +35,7 @@ export function MainNavigator() {
         headerShown: false,
       }}
     >
+      <Stack.Screen name="details" component={DetailsScreen} />
       <Stack.Screen name="init" component={InitScreen} />
     </Stack.Navigator>
   )
@@ -48,5 +50,5 @@ export function MainNavigator() {
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-const exitRoutes = ["welcome"]
+const exitRoutes = ["init"]
 export const canExit = (routeName: string) => exitRoutes.includes(routeName)
