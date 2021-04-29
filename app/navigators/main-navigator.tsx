@@ -31,6 +31,7 @@ const Stack = createStackNavigator<PrimaryParamList>()
 export function MainNavigator() {
   return (
     <Stack.Navigator
+      initialRouteName={"init"}
       screenOptions={{
         headerShown: false,
       }}

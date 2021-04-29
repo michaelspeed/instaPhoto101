@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Dimensions, StyleProp, Text, TouchableOpacity, View, ViewStyle } from "react-native"
+import { StyleProp, Text, TouchableOpacity, useWindowDimensions, View, ViewStyle } from "react-native"
 import tailwind from "tailwind-rn"
 import { flatten } from "ramda"
 import { Shadow4 } from "../../theme/shadow"
@@ -23,9 +23,9 @@ export interface HeaderProps {
 export function Header(props: HeaderProps) {
   const {headerText, showBack} = props
   const {goBack} = useNavigation()
-  const width = Dimensions.get("window").width - 40
+  const width = useWindowDimensions().width - 40
   return (
-    <View style={flatten([tailwind('m-5'), Shadow4, {backgroundColor: 'transparent', position: 'absolute', top: 0, height: 80, width}])}>
+    <View style={flatten([tailwind('m-5'), Shadow4, {backgroundColor: 'transparent', position: 'absolute', top: 0, height: 80, width} as any])}>
       <View style={flatten([tailwind('px-5 py-2 rounded-lg bg-indigo-50 border-blue-100 border-2 flex-row items-center')])}>
         {showBack && <TouchableOpacity onPress={() => goBack()} style={tailwind('rounded-full p-1')}>
           <FontAwesome5 name="arrow-left" solid style={flatten([tailwind('text-gray-500'), {fontSize: 18}])}/>

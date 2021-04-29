@@ -13,13 +13,11 @@ export class PixabayApi {
   async getImages(page: number) {
     const envKey = env.API_KEY
     const url = env.URL
-    console.log(env)
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         url,
         {key: envKey, page}
       )
-      console.log(response)
       if (!response.ok) {
         const problem = getGeneralApiProblem(response)
         if (problem) return problem

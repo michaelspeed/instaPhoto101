@@ -26,9 +26,6 @@ export function DetailsScreen(props: DetailsScreenProps) {
   return (
     <Screen style={tailwind('bg-indigo-500 flex-1')} preset="fixed">
       <SafeAreaView>
-        <View>
-          {loading && <ActivityIndicator size={"large"} color="#4F46E5"/>}
-        </View>
         <FastImage
           style={flatten([{height: '50%', marginTop: 70}, Shadow4 as any])}
           onLoadStart={() => setLoading(true)}
@@ -39,6 +36,9 @@ export function DetailsScreen(props: DetailsScreenProps) {
           }}
           resizeMode={FastImage.resizeMode.contain}
         />
+        <View>
+          {loading && <ActivityIndicator size={"large"} color="#ffffff" style={tailwind('my-10')}/>}
+        </View>
         <View style={flatten([Shadow4, tailwind('bg-white mx-2 rounded-lg p-2')])}>
           <View style={tailwind('flex-row')}>
             {tags.map((tag, index) => (<Tags key={index} text={tag}/>))}

@@ -1,31 +1,26 @@
 import React from "react"
-import { Card, Header, Screen } from "../../components"
+import { Header, FlatList, Screen } from "../../components"
 import tailwind from "tailwind-rn"
-import { FlatList, SafeAreaView, View } from "react-native"
+import { ActivityIndicator, SafeAreaView, useWindowDimensions, View } from "react-native"
 import { useSelector } from "react-redux"
-import { RootStore, useStores } from "../../models"
-import { useNavigation } from "@react-navigation/native"
+import { RootStore } from "../../models"
+import { flatten } from "ramda"
 
 export function InitScreen() {
-  // Pull in one of our MST stores
   const images = useSelector((state: RootStore) => state.imageStore.images)
-  const {imageStore} = useStores()
-
-  // Pull in navigation via hook
-  const navigation = useNavigation()
+  const progressLoader = useSelector((state: RootStore) => state.imageStore.progressLoading)
+  const error = useSelector((state: RootStore) => state.imageStore.error)
+  const {width} = useWindowDimensions()
   return (
-    <Screen style={tailwind('bg-indigo-500 flex-1')} preset="fixed">
-      <SafeAreaView style={tailwind('flex-1')}>
+    <Screen style={tailwind("bg-indigo-500 flex-1")} preset="fixed">
+      <SafeAreaView style={tailwind("flex-1")}>
         <View>
-          <FlatList data={images} style={tailwind('pt-20')}
-                    keyExtractor={(item, index) => `${item.id}${index}`}
-          onEndReachedThreshold={0.7}
-          onEndReached={() => imageStore.getNextPageData()}
-                    renderItem={item => <View style={tailwind('m-1')}>
-            <Card key={item.item.id} item={item.item as any} onPress={() => navigation.navigate('details', {item: item.item})}/>
-          </View>} numColumns={2}/>
+          <FlatList images={images}/>
         </View>
-        <Header showBack={false}/>
+        <Header showBack={false} />
+        {progressLoader && error === "" && <View style={flatten([tailwind('bg-white mb-10 mx-10 rounded-lg p-5'), {position: "absolute", bottom: 0, width: width - 80}])}>
+          <ActivityIndicator size={"large"} color="#4F46E5" />
+        </View>}
       </SafeAreaView>
     </Screen>
   )

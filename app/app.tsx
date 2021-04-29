@@ -33,6 +33,7 @@ import { enableScreens } from "react-native-screens"
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import { asReduxStore } from "mst-middlewares"
 import { Provider } from "react-redux"
+import { StatusBar } from "react-native"
 enableScreens()
 FontAwesomeIcon.getStyledIconSet('solid').loadFont();
 
@@ -71,6 +72,7 @@ function App() {
   // otherwise, we're ready to render the app
   return (
     <ToggleStorybook>
+      <StatusBar backgroundColor="#6366F1"/>
       <RootStoreProvider value={rootStore}>
         <Provider store={reduxStore as any}>
           <SafeAreaProvider initialMetrics={initialWindowMetrics}>

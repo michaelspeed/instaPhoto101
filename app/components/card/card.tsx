@@ -1,5 +1,12 @@
 import * as React from "react"
-import { Dimensions, StyleProp, Text, TouchableHighlight, View, ViewProps, ViewStyle } from "react-native"
+import {
+  StyleProp,
+  Text,
+  TouchableHighlight,
+  View,
+  ViewProps,
+  ViewStyle,
+} from "react-native"
 import tailwind from "tailwind-rn"
 import FastImage from 'react-native-fast-image'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -14,20 +21,20 @@ export interface CardProps extends ViewProps {
   style?: StyleProp<ViewStyle>
   item?: Image
   onPress?: () => void
+  height: number
+  width: number
 }
 
 /**
  * Describe your component here
  */
 export function Card(props: CardProps) {
-  const dimension = Dimensions.get("screen")
-  const width = dimension.width / 2 - 10
-  const {item, style, onPress, ...rest} = props
+  const {item, style, onPress, width, height,  ...rest} = props
   return (
     <TouchableHighlight onPress={onPress}>
-      <View style={flatten([tailwind('flex-col rounded-md bg-white'), {width: width}, Shadow2, style])} {...rest}>
+      <View style={flatten([tailwind('flex-col rounded-md bg-white'), {width, height}, Shadow2, style])} {...rest}>
         <FastImage
-          style={flatten([tailwind('rounded-md'), {height: width}, Shadow4 as any])}
+          style={flatten([tailwind('rounded-md'), {height: height - 40}, Shadow4 as any])}
           source={{
             uri: item.previewURL,
             priority: FastImage.priority.normal,

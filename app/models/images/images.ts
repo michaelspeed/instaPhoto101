@@ -1,25 +1,54 @@
-import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { cast, Instance, SnapshotOut, types } from "mobx-state-tree"
 import { ImageModel } from "../image/image"
 import { PixabayApi } from "../../services/api/pixabay-api"
 import { withEnvironment } from "../extensions/with-environment"
 
-/**
- * Model description here for TypeScript hints.
- */
 export const ImagesModel = types
   .model("Images")
   .props({
+    initLoading: types.optional(types.boolean, true),
+    progressLoading: types.optional(types.boolean, false),
     images: types.optional(types.array(ImageModel), []),
-    page: types.optional(types.number, 1)
+    page: types.optional(types.number, 1),
+    error: types.optional(types.string, ''),
   })
   .extend(withEnvironment)
   .actions(self => ({
     addImageData(images) {
+      if (images.length === 0) {
+        self.images = cast([])
+        self.page = 1
+        self.error = ""
+        self.initLoading = true
+        self.progressLoading = false
+        return
+      }
       self.images.push(...images)
     },
     addPage() {
       self.page = self.page + 1
-    }
+    },
+    triggerInitialLoading(trigger?) {
+      if (trigger) {
+        self.initLoading = trigger
+        return
+      }
+      self.initLoading = !self.initLoading
+    },
+    triggerProgressLoading(trigger?) {
+      if (trigger) {
+        self.progressLoading = trigger
+        return
+      }
+      self.progressLoading = !self.progressLoading
+    },
+    setErrorTrigger(trigger?) {
+      if(trigger){
+        self.error = trigger
+        return
+      }
+      self.error = ''
+    },
   }))
   .actions((self) => ({
     getInitialImageData: async () => {
@@ -27,14 +56,24 @@ export const ImagesModel = types
       const result = await pixabayApi.getImages(1)
       if (result.kind === "ok") {
         self.addImageData(result.images)
+        if (self.initLoading) {
+          self.triggerInitialLoading(false)
+        }
+      } else {
+        self.setErrorTrigger(result.kind)
       }
     },
     getNextPageData: async () => {
+      self.triggerProgressLoading(true)
       const pixabayApi = new PixabayApi(self.environment.api)
       const result = await pixabayApi.getImages(self.page + 1)
+      console.log(result)
       if (result.kind === "ok") {
         self.addImageData(result.images)
         self.addPage()
+        self.triggerProgressLoading(false)
+      } else {
+        self.setErrorTrigger(result.kind)
       }
     },
     afterAttach() {
