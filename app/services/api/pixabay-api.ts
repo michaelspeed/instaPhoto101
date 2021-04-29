@@ -10,13 +10,13 @@ export class PixabayApi {
     this.api = api
   }
 
-  async getImages(page: number) {
+  async getImages(page: number, query: string) {
     const envKey = env.API_KEY
     const url = env.URL
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         url,
-        {key: envKey, page}
+        {key: envKey, page, q: query}
       )
       if (!response.ok) {
         const problem = getGeneralApiProblem(response)

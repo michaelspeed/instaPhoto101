@@ -18,7 +18,7 @@ export function InitScreen() {
         <View>
           <FlatList images={images}/>
         </View>
-        <Header showBack={false} />
+        <Header showBack={false} showSearch={true} />
         {progressLoader && error === "" && <View style={flatten([tailwind('bg-white mb-10 mx-10 rounded-lg p-5'), {width: width - 80}, BottomLoadingIndicatorStyle])}>
           <ActivityIndicator size={"large"} color="#4F46E5" />
           <View style={tailwind('flex-row justify-center')}>

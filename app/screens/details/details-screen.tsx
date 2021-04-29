@@ -53,7 +53,7 @@ export function DetailsScreen(props: DetailsScreenProps) {
             <Text style={flatten([tailwind('text-indigo-400 ml-2'), DetailScreenTextStyle])}>{props.route.params.item.likes ? props.route.params.item.likes : 0}</Text>
           </View>
         </View>
-        <Header headerText={props.route.params.item.user} showBack={true} icon={<FastImage
+        <Header headerText={props.route.params.item.user} showBack={true} showSearch={false} icon={<FastImage
           style={flatten([tailwind('rounded-full ml-4'), BackIconStyle])}
           source={{
             uri: props.route.params.item.userImageURL,

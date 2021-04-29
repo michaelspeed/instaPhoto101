@@ -11,6 +11,7 @@ export const ImagesModel = types
     images: types.optional(types.array(ImageModel), []),
     page: types.optional(types.number, 1),
     error: types.optional(types.string, ''),
+    search: types.optional(types.string, "")
   })
   .extend(withEnvironment)
   .actions(self => ({
@@ -21,6 +22,7 @@ export const ImagesModel = types
         self.error = ""
         self.initLoading = true
         self.progressLoading = false
+        self.search = ""
         return
       }
       self.images.push(...images)
@@ -53,7 +55,7 @@ export const ImagesModel = types
   .actions((self) => ({
     getInitialImageData: async () => {
       const pixabayApi = new PixabayApi(self.environment.api)
-      const result = await pixabayApi.getImages(1)
+      const result = await pixabayApi.getImages(1, self.search)
       if (result.kind === "ok") {
         self.addImageData(result.images)
         if (self.initLoading) {
@@ -63,10 +65,30 @@ export const ImagesModel = types
         self.setErrorTrigger(result.kind)
       }
     },
+    setSearchTrigger(query: string) {
+      if (self.images.length > 0) {
+        self.images = cast([])
+        self.error = ""
+        self.page = 1
+        self.initLoading = true
+        self.progressLoading = false
+      }
+      self.search = query
+      this.getInitialImageData();
+    },
+    resetSearch() {
+      self.images = cast([])
+      self.page = 1
+      self.error = ""
+      self.initLoading = true
+      self.progressLoading = false
+      self.search = ""
+      this.getInitialImageData()
+    },
     getNextPageData: async () => {
       self.triggerProgressLoading(true)
       const pixabayApi = new PixabayApi(self.environment.api)
-      const result = await pixabayApi.getImages(self.page + 1)
+      const result = await pixabayApi.getImages(self.page + 1, self.search)
       console.log(result)
       if (result.kind === "ok") {
         self.addImageData(result.images)
