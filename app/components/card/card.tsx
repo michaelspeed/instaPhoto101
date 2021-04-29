@@ -15,9 +15,6 @@ import { Shadow2, Shadow4 } from "../../theme/shadow"
 import { Image } from "../../models"
 
 export interface CardProps extends ViewProps {
-  /**
-   * An optional style override useful for padding & margin.
-   */
   style?: StyleProp<ViewStyle>
   item?: Image
   onPress?: () => void
@@ -25,9 +22,6 @@ export interface CardProps extends ViewProps {
   width: number
 }
 
-/**
- * Describe your component here
- */
 export function Card(props: CardProps) {
   const {item, style, onPress, width, height,  ...rest} = props
   return (

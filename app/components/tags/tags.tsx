@@ -7,9 +7,6 @@ export interface TagsProps extends ViewProps{
   text?: string
 }
 
-/**
- * Describe your component here
- */
 export function Tags(props: TagsProps) {
   const {text, ...rest} = props
 

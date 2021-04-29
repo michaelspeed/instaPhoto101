@@ -9,7 +9,7 @@ storiesOf("Header", module)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <Header style={{ backgroundColor: color.error }} />
+        <Header style={{ backgroundColor: color.error }} showBack={false} />
       </UseCase>
     </Story>
   ))

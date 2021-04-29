@@ -9,6 +9,7 @@ import { Shadow4 } from "../../theme/shadow"
 import FastImage from "react-native-fast-image"
 import { ActivityIndicator, SafeAreaView, Text, View } from "react-native"
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { BackIconStyle, DetailImageStyle, DetailScreenTextStyle } from "../../theme/styles"
 
 interface DetailsScreenProps {
   route: RouteProp<any, any>
@@ -27,7 +28,7 @@ export function DetailsScreen(props: DetailsScreenProps) {
     <Screen style={tailwind('bg-indigo-500 flex-1')} preset="fixed">
       <SafeAreaView>
         <FastImage
-          style={flatten([{height: '50%', marginTop: 70}, Shadow4 as any])}
+          style={flatten([DetailImageStyle, Shadow4 as any])}
           onLoadStart={() => setLoading(true)}
           onLoadEnd={() => setLoading(false)}
           source={{
@@ -44,16 +45,16 @@ export function DetailsScreen(props: DetailsScreenProps) {
             {tags.map((tag, index) => (<Tags key={index} text={tag}/>))}
           </View>
           <View style={tailwind('flex-row px-1 pb-1 items-center justify-start mt-4')}>
-            <FontAwesome5 name="comments" solid style={flatten([tailwind('text-purple-500'), {fontSize: 20}])}/>
-            <Text style={flatten([tailwind('text-purple-400 ml-2'), {fontSize: 20}])}>{props.route.params.item.comments ? props.route.params.item.comments: 0}</Text>
-            <FontAwesome5 name="heart" solid style={flatten([tailwind('text-red-500  ml-2'), {fontSize: 20}])}/>
-            <Text style={flatten([tailwind('text-red-400 ml-2'), {fontSize: 20}])}>{props.route.params.item.favorites ? props.route.params.item.favorites: 0}</Text>
-            <FontAwesome5 name="thumbs-up" solid style={flatten([tailwind('text-indigo-500 pl-2'), {fontSize: 20}])}/>
-            <Text style={flatten([tailwind('text-indigo-400 ml-2'), {fontSize: 20}])}>{props.route.params.item.likes ? props.route.params.item.likes : 0}</Text>
+            <FontAwesome5 name="comments" solid style={flatten([tailwind('text-purple-500'), DetailScreenTextStyle])}/>
+            <Text style={flatten([tailwind('text-purple-400 ml-2'), DetailScreenTextStyle])}>{props.route.params.item.comments ? props.route.params.item.comments: 0}</Text>
+            <FontAwesome5 name="heart" solid style={flatten([tailwind('text-red-500  ml-2'), DetailScreenTextStyle])}/>
+            <Text style={flatten([tailwind('text-red-400 ml-2'), DetailScreenTextStyle])}>{props.route.params.item.favorites ? props.route.params.item.favorites: 0}</Text>
+            <FontAwesome5 name="thumbs-up" solid style={flatten([tailwind('text-indigo-500 pl-2'), DetailScreenTextStyle])}/>
+            <Text style={flatten([tailwind('text-indigo-400 ml-2'), DetailScreenTextStyle])}>{props.route.params.item.likes ? props.route.params.item.likes : 0}</Text>
           </View>
         </View>
         <Header headerText={props.route.params.item.user} showBack={true} icon={<FastImage
-          style={flatten([tailwind('rounded-full ml-4'), {height: 24, width: 24}])}
+          style={flatten([tailwind('rounded-full ml-4'), BackIconStyle])}
           source={{
             uri: props.route.params.item.userImageURL,
             priority: FastImage.priority.normal,

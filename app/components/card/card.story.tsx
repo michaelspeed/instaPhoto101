@@ -1,7 +1,6 @@
 import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
 import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { color } from "../../theme"
 import { Card } from "./card"
 
 storiesOf("Card", module)
@@ -9,7 +8,7 @@ storiesOf("Card", module)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <Card style={{ backgroundColor: color.error }} />
+        <Card width={100} height={100} />
       </UseCase>
     </Story>
   ))

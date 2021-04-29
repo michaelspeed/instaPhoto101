@@ -2,13 +2,10 @@ import * as React from "react"
 import { Text, TextProps, View } from "react-native"
 import tailwind from "tailwind-rn"
 
-export interface HeaderLogoProps extends TextProps{
+export interface HeaderLogoProps extends TextProps {
 
 }
 
-/**
- * Describe your component here
- */
 export function HeaderLogo(props: HeaderLogoProps) {
 
   return (
