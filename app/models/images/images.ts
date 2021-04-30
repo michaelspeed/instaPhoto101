@@ -11,7 +11,8 @@ export const ImagesModel = types
     images: types.optional(types.array(ImageModel), []),
     page: types.optional(types.number, 1),
     error: types.optional(types.string, ''),
-    search: types.optional(types.string, "")
+    search: types.optional(types.string, ""),
+    queryStatus: types.optional(types.boolean, false)
   })
   .extend(withEnvironment)
   .actions(self => ({
@@ -51,9 +52,16 @@ export const ImagesModel = types
       }
       self.error = ''
     },
+    setQueryStatus() {
+      self.queryStatus = !self.queryStatus
+    }
   }))
   .actions((self) => ({
     getInitialImageData: async () => {
+      if (self.queryStatus) {
+        return
+      }
+      self.setQueryStatus()
       const pixabayApi = new PixabayApi(self.environment.api)
       const result = await pixabayApi.getImages(1, self.search)
       if (result.kind === "ok") {
@@ -64,8 +72,12 @@ export const ImagesModel = types
       } else {
         self.setErrorTrigger(result.kind)
       }
+      self.setQueryStatus()
     },
     setSearchTrigger(query: string) {
+      if (self.queryStatus) {
+        return
+      }
       if (self.images.length > 0) {
         self.images = cast([])
         self.error = ""
@@ -86,6 +98,10 @@ export const ImagesModel = types
       this.getInitialImageData()
     },
     getNextPageData: async () => {
+      if (self.queryStatus) {
+        return
+      }
+      self.setQueryStatus()
       self.triggerProgressLoading(true)
       const pixabayApi = new PixabayApi(self.environment.api)
       const result = await pixabayApi.getImages(self.page + 1, self.search)
@@ -97,6 +113,7 @@ export const ImagesModel = types
       } else {
         self.setErrorTrigger(result.kind)
       }
+      self.setQueryStatus()
     },
     afterAttach() {
       if (self.images.length === 0) {
